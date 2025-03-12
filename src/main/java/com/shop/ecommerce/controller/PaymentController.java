@@ -1,6 +1,7 @@
 package com.shop.ecommerce.controller;
 
 import com.razorpay.RazorpayException;
+import com.shop.ecommerce.exception.CartException;
 import com.shop.ecommerce.exception.CommonException;
 import com.shop.ecommerce.exception.SellerException;
 import com.shop.ecommerce.modal.*;
@@ -25,9 +26,11 @@ public class PaymentController {
     private final SellerService sellerService;
     private final MessageMultiUtils messageMultiUtils;
     private final TransactionService transactionService;
+    private final CartItemService cartItemServicer;
+    private final CartService cartService;
 
     @GetMapping("/{paymentId}")
-    public ResponseEntity<Object> paymentSuccessHandle(@PathVariable String paymentId, @RequestParam String paymentLinkId, @RequestHeader(JWT_CONSTANT.JWT_HEADER) String token) throws CommonException, RazorpayException, SellerException, StripeException {
+    public ResponseEntity<Object> paymentSuccessHandle(@PathVariable String paymentId, @RequestParam String paymentLinkId, @RequestHeader(JWT_CONSTANT.JWT_HEADER) String token) throws CommonException, RazorpayException, SellerException, StripeException, CartException {
         User user = userService.findUserByJwtToken(token);
 
         PaymentLinkResponse paymentLinkResponse;
@@ -44,8 +47,11 @@ public class PaymentController {
                sellerReport.setTotalSales(sellerReport.getTotalSales() + order.getOrderItems().size());
                sellerReportService.updateSellerReport(sellerReport);
             }
-        }
-
+            Cart cart = cartService.findUserCart(user);
+            for (CartItem cartItem : cart.getCartItems()) {
+                cartService.deleteCartItem(user, cartItem.getId());
+            }
+         }
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setMessage(messageMultiUtils.getMessage("payment.success"));
         return ResponseEntity.ok(apiResponse);

@@ -58,6 +58,16 @@ public class CartServiceImpl implements CartService {
         return cart;
     }
 
+    @Override
+    public void deleteCartItem(User user, Long cartItemId) throws CartException {
+        Cart cart = findUserCart(user);
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new CartException(messageMultiUtils.getMessage("cart.item.not.found")));
+        cart.getCartItems().remove(cartItem);
+        cartRepository.save(cart);
+        cartItemRepository.delete(cartItem);
+    }
+
     private Integer calculateDiscount(Integer mrpPrice, Integer sellingPrice) {
         if (mrpPrice <= 0) return 0;
         if (sellingPrice <= 0) return 0;

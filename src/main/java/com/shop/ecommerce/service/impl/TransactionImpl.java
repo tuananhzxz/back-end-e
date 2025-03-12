@@ -9,6 +9,7 @@ import com.shop.ecommerce.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class TransactionImpl implements TransactionService {
         Seller seller = sellerRepository.findById(order.getSellerId()).orElseThrow();
 
         Transaction transaction = Transaction.builder()
+                .date(LocalDateTime.now())
                 .customer(order.getUser())
                 .order(order)
                 .seller(seller)

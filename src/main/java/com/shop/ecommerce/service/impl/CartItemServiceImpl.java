@@ -45,8 +45,9 @@ public class CartItemServiceImpl implements CartItemService {
         User cartItemUser = item.getCart().getUser();
         if (cartItemUser.getId().equals(userId)) {
             cartItemRepository.delete(item);
+        }else {
+            throw new IllegalArgumentException(messageMultiUtils.getMessage("cart.item.not.deleted"));
         }
-        throw new IllegalArgumentException(messageMultiUtils.getMessage("cart.item.not.deleted"));
     }
 
     @Override

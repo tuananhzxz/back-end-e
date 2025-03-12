@@ -72,8 +72,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Long productId, Product product) throws CommonException {
-        this.findProductById(productId);
+        Product product1 = this.findProductById(productId);
         product.setId(productId);
+        product.setCategory(product1.getCategory());
+        product.setSeller(product1.getSeller());
+        product.setReviews(product1.getReviews());
         return productRepository.save(product);
     }
 

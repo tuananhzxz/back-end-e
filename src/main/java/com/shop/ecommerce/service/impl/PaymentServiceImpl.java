@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 @Service
 @RequiredArgsConstructor
@@ -46,6 +47,15 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentOrder getPaymentOrderById(Long orderId) throws CommonException {
         return paymentOrderRepository.findById(orderId).orElseThrow(() -> new CommonException(messageMultiUtils.getMessage("payment.order.not.found")));
+    }
+
+    @Override
+    public List<PaymentOrder> getPaymentOrderByUserId(Long userId) throws CommonException {
+        List<PaymentOrder> paymentOrder = paymentOrderRepository.findByUserId(userId);
+        if (paymentOrder == null) {
+            throw new CommonException(messageMultiUtils.getMessage("payment.order.not.found"));
+        }
+        return paymentOrder;
     }
 
     @Override

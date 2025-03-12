@@ -9,4 +9,5 @@ import com.shop.ecommerce.modal.User;
 public interface CartService {
     CartItem createCartItem(User user, Product product, String size, Integer quantity) throws CartException;
     Cart findUserCart(User user) throws CartException;
+    void deleteCartItem(User user, Long cartItemId) throws CartException;
 }
