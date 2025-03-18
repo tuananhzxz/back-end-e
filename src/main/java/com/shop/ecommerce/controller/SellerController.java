@@ -107,4 +107,16 @@ public class SellerController {
         sellerService.deleteSeller(id);
         return ResponseEntity.ok(messageMultiUtils.getMessage("seller.deleted"));
     }
+
+    @PostMapping("/update/banner")
+    public ResponseEntity<Object> updateSellerBanner(@RequestHeader(JWT_CONSTANT.JWT_HEADER) String token, @RequestBody String banner) throws SellerException {
+        String updatedSeller = sellerService.updateBanner(token, banner);
+        return ResponseEntity.ok(updatedSeller);
+    }
+
+    @GetMapping("/seller-by-product/{productId}")
+    public ResponseEntity<Object> getSellerByProductId(@PathVariable Long productId) throws SellerException {
+        Seller seller = sellerService.getSellerByProductId(productId);
+        return ResponseEntity.ok(seller);
+    }
 }

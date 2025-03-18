@@ -3,6 +3,7 @@ package com.shop.ecommerce.service;
 import com.shop.ecommerce.domain.AccountStatus;
 import com.shop.ecommerce.exception.SellerException;
 import com.shop.ecommerce.modal.Seller;
+import org.springframework.boot.Banner;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface SellerService {
     void deleteSeller(Long id) throws SellerException;
     Seller verifyEmail(String email, String otp) throws SellerException;
     Seller updateAccountStatus(Long id, AccountStatus status) throws SellerException;
+    String updateBanner(String token, String banner) throws SellerException;
+    Seller getSellerByProductId(Long productId) throws SellerException;
 }

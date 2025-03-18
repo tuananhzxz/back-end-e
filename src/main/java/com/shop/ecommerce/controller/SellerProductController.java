@@ -30,6 +30,12 @@ public class SellerProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/{sellerId}")
+    public ResponseEntity<List<?>> getProductById(@PathVariable Long sellerId) {
+        List<Product> product = productService.getProductsBySellerId(sellerId);
+        return ResponseEntity.ok(product);
+    }
+
     @PostMapping
     public ResponseEntity<Object> createProduct(@RequestHeader(JWT_CONSTANT.JWT_HEADER) String token,
                                                  @RequestBody CreateProductRequest request) throws SellerException, CommonException {
