@@ -154,4 +154,10 @@ public class AuthServiceImpl implements AuthService {
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
+
+    @Override
+    public VerificationCode validateToken(String token) {
+        String email = jwtProvider.getEmailFromToken(token);
+        return verificationCodeRepository.findByEmail(email);
+    }
 }

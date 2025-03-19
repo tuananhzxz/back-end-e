@@ -1,7 +1,9 @@
 package com.shop.ecommerce.modal;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class Product extends BaseEntity {
 
     private String title;
 
+    @Lob
+    @Length(max = 1500)
     private String description;
 
     private Integer mrpPrice;

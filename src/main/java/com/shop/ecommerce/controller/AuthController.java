@@ -10,13 +10,11 @@ import com.shop.ecommerce.response.ApiResponse;
 import com.shop.ecommerce.response.AuthResponse;
 import com.shop.ecommerce.response.SignUpRequest;
 import com.shop.ecommerce.service.AuthService;
+import com.shop.ecommerce.utils.JWT_CONSTANT;
 import com.shop.ecommerce.utils.MessageMultiUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -52,6 +50,17 @@ public class AuthController {
     @PostMapping("/sent/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
         AuthResponse response = authService.login(loginRequest);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/validate-token")
+    public ResponseEntity<Object> validateToken(@RequestHeader(JWT_CONSTANT.JWT_HEADER) String token) {
+        VerificationCode verificationCode = authService.validateToken(token);
+
+        ApiResponse response = new ApiResponse();
+        response.setMessage("Token is valid");
+        response.setData(verificationCode);
 
         return ResponseEntity.ok(response);
     }
